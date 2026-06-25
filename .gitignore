@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Virtual env
+venv/
+env/
+
+# Data
+data/raw/
+data/processed/
+
+# Artifacts
+artifacts/models/
+artifacts/baselines/
+artifacts/encoders/
+
+# Output
+output/
+
+# OS
+.DS_Store
+Thumbs.db

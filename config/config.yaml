@@ -1,0 +1,88 @@
+
+---
+
+### `config/config.yaml`
+
+paths:
+  raw_data: "data/raw/combined_dataset.pkl"
+  processed_data: "data/processed/processed_claims.pkl"
+
+  baselines_dir: "artifacts/baselines"
+  models_dir: "artifacts/models"
+  encoders_dir: "artifacts/encoders"
+
+  prediction_output: "output/predictions/scored_claims.xlsx"
+
+columns:
+  diagnosis: "PA_PRIMARY_DIAG"
+  treatment_code: "PROV_TREAT_CODE"
+  drug_name: "PAT_DRUG_NAME"
+  scientific_drug_name: "DRUG_SCIENTIFIC_NAME"
+  drug_duration: "DRUG_DURATION"
+  dosage_desc: "DOSAGE_DESC"
+  quantity: "PA_QTY"
+
+  provider: "PROV_NAME"
+  doctor: "DOC_NAME"
+
+  est_amount: "PA_EST_AMT_LC"
+  appr_amount: "PA_APPR_AMT_LC"
+  rej_amount: "PA_REJ_AMT_LC"
+
+  service_type: "SERVICE_TYPE"
+  category: "PA_CATG"
+
+preprocessing:
+  invalid_values:
+    - ""
+    - "NAN"
+    - "NONE"
+    - "NULL"
+    - "UNKNOWN"
+
+  month_days: 30
+  week_days: 7
+
+baseline:
+  min_support: 5
+
+  percentiles:
+    p75: 0.75
+    p90: 0.90
+    p95: 0.95
+
+  iqr_multiplier: 1.5
+
+risk_scoring:
+  weights:
+    cost_score: 25
+    rare_drug_score: 20
+    duration_score: 15
+    dosage_score: 10
+    provider_score: 15
+    doctor_score: 10
+    isolation_score: 5
+
+  labels:
+    normal_max: 30
+    warning_max: 60
+    high_max: 80
+
+catboost:
+  target: "PA_EST_AMT_LC"
+  iterations: 500
+  learning_rate: 0.05
+  depth: 6
+  loss_function: "RMSE"
+  random_seed: 42
+
+isolation_forest:
+  contamination: 0.03
+  random_state: 42
+
+output_settings:
+  show_debug_evidence: true
+
+future_modules:
+  enable_specialization_engine: false
+  enable_rejection_engine: false
